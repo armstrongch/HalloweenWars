@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Soul Harvest</title>
+		<style type="text/css">
+			.monsterCard {
+				float: left;
+				outline: 1px solid black;
+				margin: 5px;
+			}
+			.cardHeader {
+				text-align: center;
+			}
+			.cardAttribute {
+				cursor: pointer;
+				margin: 0px;
+			}
+			.cardAttributeValue {
+				margin: 0px;
+			}
+		</style>
+	</head>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	
+	<body onload="setup()">
+		<div id="monsterCards">	
+		</div>
+		<script>
+			
+			function defineSpooky()
+			{
+				alert("The spookier a monster is, the stronger it is in a fight.");
+			}
+			
+			function defineScary()
+			{
+				alert("The scarier a monster is, the less likely other monsters will want to fight it.")
+			}
+			
+			function defineSpeedy()
+			{
+				alert("The speedier a monster is, the faster it can travel, and the earlier it attacks in a fight.")
+			}
+			
+			function defineGreedy()
+			{
+				alert("The greedier a monster is, the more souls it harvests in the graveyard.")
+			}
+			
+			function defineCostly()
+			{
+				alert("The more costly a monster is, the more souls it costs to summon.")
+			}
+			
+			function setup()
+			{
+				for (let i = 0; i < monsterCards.length; i++)
+				{
+					monsterCard = monsterCards[i];
+					monsterCardHTML = monsterCardHTMLTemplate;
+					monsterCardHTML = monsterCardHTML.replace("[Name]", monsterCard.name);
+					monsterCardHTML = monsterCardHTML.replace("[Spooky]", monsterCard.spooky);
+					monsterCardHTML = monsterCardHTML.replace("[Scary]", monsterCard.scary);
+					monsterCardHTML = monsterCardHTML.replace("[Speedy]", monsterCard.speedy);
+					monsterCardHTML = monsterCardHTML.replace("[Greedy]", monsterCard.greedy);
+					monsterCardHTML = monsterCardHTML.replace("[Costly]", monsterCard.costly);
+					
+					$('#monsterCards').html($('#monsterCards').html() + monsterCardHTML);
+				}
+				
+			}
+			
+			function monster(name, spooky, scary, speedy, greedy, costly)
+			{
+				this.name = name;
+				this.spooky = spooky;
+				this.scary = scary;
+				this.speedy = speedy;
+				this.greedy = greedy;
+				this.costly = costly;
+			}
+			
+			var monsterCards = [
+				new monster("Goblin", 1, 1, 1, 1, 1)
+			];
+			
+			var monsterCardHTMLTemplate = "<div class=\"monsterCard\"><table><tr><td colspan=\"2\"><h1 class=\"cardHeader\">[Name]</h1></td></tr><tr><td><p class=\"cardAttribute\" onclick=\"defineSpooky()\">Spooky:</p></td><td><p class=\"cardAttributeValue\">[Spooky]</p></td></tr><tr><td><p class=\"cardAttribute\" onclick=\"defineScary()\">Scary:</p></td><td><p class=\"cardAttributeValue\">[Scary]</p></td></tr><tr><td><p class=\"cardAttribute\" onclick=\"defineSpeedy()\">Speedy:</p></td><td><p class=\"cardAttributeValue\">[Speedy]</p></td></tr><tr><td><p class=\"cardAttribute\" onclick=\"defineGreedy()\">Greedy:</p></td><td><p class=\"cardAttributeValue\">[Greedy]</p></td></tr><tr><td><p class=\"cardAttribute\" onclick=\"defineCostly()\">Costly:</p></td><td><p class=\"cardAttributeValue\">[Costly]</p></td></tr></table></div>";
+		</script>
+	</body>
+</html>
