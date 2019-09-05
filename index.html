@@ -2,12 +2,13 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>Soul Harvest</title>
+		<title>Spooky Scramble</title>
 		<style type="text/css">
 			.monsterCard {
 				float: left;
 				outline: 1px solid black;
 				margin: 5px;
+				min-width: 20%;
 			}
 			.cardHeader {
 				text-align: center;
@@ -65,10 +66,30 @@
 					monsterCardHTML = monsterCardHTML.replace("[Speedy]", monsterCard.speedy);
 					monsterCardHTML = monsterCardHTML.replace("[Greedy]", monsterCard.greedy);
 					monsterCardHTML = monsterCardHTML.replace("[Costly]", monsterCard.costly);
+					//We need to do this twice to set the tr values and the text
+					monsterCardHTML = monsterCardHTML.replace("[Name]", monsterCard.name);
+					monsterCardHTML = monsterCardHTML.replace("[Spooky]", monsterCard.spooky);
+					monsterCardHTML = monsterCardHTML.replace("[Scary]", monsterCard.scary);
+					monsterCardHTML = monsterCardHTML.replace("[Speedy]", monsterCard.speedy);
+					monsterCardHTML = monsterCardHTML.replace("[Greedy]", monsterCard.greedy);
+					monsterCardHTML = monsterCardHTML.replace("[Costly]", monsterCard.costly);
 					
 					$('#monsterCards').html($('#monsterCards').html() + monsterCardHTML);
+					
+					clearHighlightedCards();
 				}
 				
+			}
+			
+			function highlightCards()
+			{
+				
+			}
+			
+			function clearHighlightedCards()
+			{
+				$('p.cardAttribute').css({'color':'white'});
+				$('p.cardAttributeValue').css({'color':'white'});
 			}
 			
 			function monster(name, spooky, scary, speedy, greedy, costly)
@@ -96,7 +117,7 @@
 				new monster("Devil", 		10,		6, 		3, 		3, 		10)
 			];
 			
-			var monsterCardHTMLTemplate = "<div class=\"monsterCard\"><table><tr><td colspan=\"2\"><h1 class=\"cardHeader\">[Name]</h1></td></tr><tr><td><p class=\"cardAttribute\" onclick=\"defineSpooky()\">Spooky:</p></td><td><p class=\"cardAttributeValue\">[Spooky]</p></td></tr><tr><td><p class=\"cardAttribute\" onclick=\"defineScary()\">Scary:</p></td><td><p class=\"cardAttributeValue\">[Scary]</p></td></tr><tr><td><p class=\"cardAttribute\" onclick=\"defineSpeedy()\">Speedy:</p></td><td><p class=\"cardAttributeValue\">[Speedy]</p></td></tr><tr><td><p class=\"cardAttribute\" onclick=\"defineGreedy()\">Greedy:</p></td><td><p class=\"cardAttributeValue\">[Greedy]</p></td></tr><tr><td><p class=\"cardAttribute\" onclick=\"defineCostly()\">Costly:</p></td><td><p class=\"cardAttributeValue\">[Costly]</p></td></tr></table></div>";
+			var monsterCardHTMLTemplate = "<div class=\"monsterCard\"><table><tr><td colspan=\"2\"><h1 class=\"cardHeader\">[Name]</h1></td></tr><tr value=\"[Spooky]\"><td><p class=\"cardAttribute\" onclick=\"defineSpooky()\">Spooky:</p></td><td><p class=\"cardAttributeValue\">[Spooky]</p></td></tr><tr value=\"[Scary]\"><td><p class=\"cardAttribute\" onclick=\"defineScary()\">Scary:</p></td><td><p class=\"cardAttributeValue\">[Scary]</p></td></tr><tr value=\"[Speedy]\"><td><p class=\"cardAttribute\" onclick=\"defineSpeedy()\">Speedy:</p></td><td><p class=\"cardAttributeValue\">[Speedy]</p></td></tr><tr value=\"[Greedy]\"><td><p class=\"cardAttribute\" onclick=\"defineGreedy()\">Greedy:</p></td><td><p class=\"cardAttributeValue\">[Greedy]</p></td></tr><tr value=\"[Costly]\"><td><p class=\"cardAttribute\" onclick=\"defineCostly()\">Costly:</p></td><td><p class=\"cardAttributeValue\">[Costly]</p></td></tr></table></div>";
 		</script>
 	</body>
 </html>
