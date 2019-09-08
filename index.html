@@ -75,21 +75,59 @@
 					monsterCardHTML = monsterCardHTML.replace("[Costly]", monsterCard.costly);
 					
 					$('#monsterCards').html($('#monsterCards').html() + monsterCardHTML);
-					
-					clearHighlightedCards();
 				}
 				
 			}
 			
-			function highlightCards()
+			function highlightCards(cardAttribute)
 			{
+				var value = parseInt(cardAttribute.parentElement.parentElement.getAttribute('value'), 10);
+				var attributeName = cardAttribute.parentElement.parentElement.children[0].innerText;
+				var cardName = cardAttribute.parentElement.parentElement.parentElement.children[0].children[0].children[0].innerText;
+				
+				var monsterCardDivs = $('#monsterCards div');
+				for (let i = 0; i < monsterCardDivs.length; i++)
+				{
+					var mcd_toTest = monsterCardDivs[i];
+					var cardName_toTest = mcd_toTest.children[0].children[0].children[0].children[0].children[0].innerText;
+					if (cardName_toTest != cardName)
+					{
+						var tableRows = mcd_toTest.children[0].children[0];
+						for (let j = 1; j < tableRows.children.length; j++)
+						{
+							var tableRowToTest = tableRows.children[j];
+							var attributeName_toTest = tableRowToTest.children[0].children[0].innerText;
+							if (attributeName_toTest == attributeName)
+							{
+								var value_toTest = parseInt(tableRowToTest.attributes['value'].value, 10);
+								if (attributeName == "Costly:")
+								{
+									value_toTest = Math.abs(value_toTest) * -1;
+									value = Math.abs(value) * -1;
+								}
+								if (value_toTest > value)
+								{
+									tableRowToTest.children[0].children[0].style.backgroundColor  = 'green';
+								}
+								else if (value_toTest < value)
+								{
+									tableRowToTest.children[0].children[0].style.backgroundColor  = 'red';
+								}
+								else
+								{
+									tableRowToTest.children[0].children[0].style.backgroundColor  = 'yellow';
+								}
+							}
+						}
+					}
+					
+				}
 				
 			}
 			
 			function clearHighlightedCards()
 			{
-				$('p.cardAttribute').css({'color':'black'});
-				$('p.cardAttributeValue').css({'color':'black'});
+				$('p.cardAttribute').css({'background-color':'white'});
 			}
 			
 			function monster(name, spooky, scary, speedy, greedy, costly)
@@ -117,7 +155,7 @@
 				new monster("Devil", 		10,		6, 		3, 		3, 		10)
 			];
 			
-			var monsterCardHTMLTemplate = "<div class=\"monsterCard\"><table><tr><td colspan=\"2\"><h1 class=\"cardHeader\">[Name]</h1></td></tr><tr value=\"[Spooky]\"><td><p class=\"cardAttribute\" onclick=\"defineSpooky()\">Spooky:</p></td><td><p class=\"cardAttributeValue\">[Spooky]</p></td></tr><tr value=\"[Scary]\"><td><p class=\"cardAttribute\" onclick=\"defineScary()\">Scary:</p></td><td><p class=\"cardAttributeValue\">[Scary]</p></td></tr><tr value=\"[Speedy]\"><td><p class=\"cardAttribute\" onclick=\"defineSpeedy()\">Speedy:</p></td><td><p class=\"cardAttributeValue\">[Speedy]</p></td></tr><tr value=\"[Greedy]\"><td><p class=\"cardAttribute\" onclick=\"defineGreedy()\">Greedy:</p></td><td><p class=\"cardAttributeValue\">[Greedy]</p></td></tr><tr value=\"[Costly]\"><td><p class=\"cardAttribute\" onclick=\"defineCostly()\">Costly:</p></td><td><p class=\"cardAttributeValue\">[Costly]</p></td></tr></table></div>";
+			var monsterCardHTMLTemplate = "<div class=\"monsterCard\"><table><tr><td colspan=\"2\"><h1 class=\"cardHeader\">[Name]</h1></td></tr><tr value=\"[Spooky]\"><td><p class=\"cardAttribute\" onmouseenter=\"highlightCards(this)\" onmouseleave=\"clearHighlightedCards()\" onclick=\"defineSpooky()\">Spooky:</p></td><td><p class=\"cardAttributeValue\">[Spooky]</p></td></tr><tr value=\"[Scary]\"><td><p class=\"cardAttribute\" onmouseenter=\"highlightCards(this)\" onmouseleave=\"clearHighlightedCards()\" onclick=\"defineScary()\">Scary:</p></td><td><p class=\"cardAttributeValue\">[Scary]</p></td></tr><tr value=\"[Speedy]\"><td><p class=\"cardAttribute\" onmouseenter=\"highlightCards(this)\" onmouseleave=\"clearHighlightedCards()\" onclick=\"defineSpeedy()\">Speedy:</p></td><td><p class=\"cardAttributeValue\">[Speedy]</p></td></tr><tr value=\"[Greedy]\"><td><p class=\"cardAttribute\" onmouseenter=\"highlightCards(this)\" onmouseleave=\"clearHighlightedCards()\" onclick=\"defineGreedy()\">Greedy:</p></td><td><p class=\"cardAttributeValue\">[Greedy]</p></td></tr><tr value=\"[Costly]\"><td><p class=\"cardAttribute\" onmouseenter=\"highlightCards(this)\" onmouseleave=\"clearHighlightedCards()\" onclick=\"defineCostly()\">Costly:</p></td><td><p class=\"cardAttributeValue\">[Costly]</p></td></tr></table></div>";
 		</script>
 	</body>
 </html>
