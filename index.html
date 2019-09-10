@@ -27,6 +27,14 @@
 	<body onload="setup()">
 		<div id="monsterCards">	
 		</div>
+		<div class="monsterCard">
+			<h1>Player 1 Team</h1>
+			<ol id="team1OL"></ol>
+		</div>
+		<div class="monsterCard">
+			<h1>Player 2 Team</h1>
+			<ol id="team2OL"></ol>
+		</div>
 		<script>
 			
 			function defineSpooky()
@@ -76,7 +84,6 @@
 					
 					$('#monsterCards').html($('#monsterCards').html() + monsterCardHTML);
 				}
-				
 			}
 			
 			function highlightCards(cardAttribute)
