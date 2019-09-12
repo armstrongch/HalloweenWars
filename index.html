@@ -25,6 +25,7 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	
 	<body onload="setup()">
+		<h1 id="info"></h1>
 		<div id="monsterCards">	
 		</div>
 		<div class="monsterCard">
@@ -36,7 +37,6 @@
 			<ol id="team2OL"></ol>
 		</div>
 		<script>
-			
 			function defineSpooky()
 			{
 				alert("The spookier a monster is, the stronger it is in a fight.");
@@ -62,6 +62,24 @@
 				alert("The more costly a monster is, the more souls it costs to summon.")
 			}
 			
+			var playerOneTeam = [];
+			var playerTwoTeam = [];
+			var activePlayerNum = 1;
+			
+			function updateDraftStatus()
+			{
+				var pickNum = playerOneTeam.length + playerTwoTeam.length;
+				if ((pickNum == 0) || (pickNum == 3) || (pickNum == 4) || (pickNum == 7) || (pickNum == 8))
+				{
+					activePlayerNum = 1;
+				}
+				else
+				{
+					activePlayerNum = 2;
+				}
+				$('#info').html('It is Player ' + activePlayerNum + '\'s Turn to Pick!');
+			}
+			
 			function setup()
 			{
 				for (let i = 0; i < monsterCards.length; i++)
@@ -84,6 +102,8 @@
 					
 					$('#monsterCards').html($('#monsterCards').html() + monsterCardHTML);
 				}
+				
+				updateDraftStatus()
 			}
 			
 			function highlightCards(cardAttribute)
