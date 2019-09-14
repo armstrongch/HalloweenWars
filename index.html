@@ -20,6 +20,13 @@
 			.cardAttributeValue {
 				margin: 0px;
 			}
+			.monsterTable {
+				width: 100%;
+			}
+			.selectMonsterButton {
+				width: 100%;
+				text-align: center;
+			}
 		</style>
 	</head>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -182,7 +189,12 @@
 				new monster("Devil", 		10,		6, 		3, 		3, 		10)
 			];
 			
-			var monsterCardHTMLTemplate = "<div class=\"monsterCard\"><table><tr><td colspan=\"2\"><h1 class=\"cardHeader\">[Name]</h1></td></tr><tr value=\"[Spooky]\"><td><p class=\"cardAttribute\" onmouseenter=\"highlightCards(this)\" onmouseleave=\"clearHighlightedCards()\" onclick=\"defineSpooky()\">Spooky:</p></td><td><p class=\"cardAttributeValue\">[Spooky]</p></td></tr><tr value=\"[Scary]\"><td><p class=\"cardAttribute\" onmouseenter=\"highlightCards(this)\" onmouseleave=\"clearHighlightedCards()\" onclick=\"defineScary()\">Scary:</p></td><td><p class=\"cardAttributeValue\">[Scary]</p></td></tr><tr value=\"[Speedy]\"><td><p class=\"cardAttribute\" onmouseenter=\"highlightCards(this)\" onmouseleave=\"clearHighlightedCards()\" onclick=\"defineSpeedy()\">Speedy:</p></td><td><p class=\"cardAttributeValue\">[Speedy]</p></td></tr><tr value=\"[Greedy]\"><td><p class=\"cardAttribute\" onmouseenter=\"highlightCards(this)\" onmouseleave=\"clearHighlightedCards()\" onclick=\"defineGreedy()\">Greedy:</p></td><td><p class=\"cardAttributeValue\">[Greedy]</p></td></tr><tr value=\"[Costly]\"><td><p class=\"cardAttribute\" onmouseenter=\"highlightCards(this)\" onmouseleave=\"clearHighlightedCards()\" onclick=\"defineCostly()\">Costly:</p></td><td><p class=\"cardAttributeValue\">[Costly]</p></td></tr></table></div>";
+			function selectMonster(name)
+			{
+				alert("Test! " + name);
+			}
+			
+			var monsterCardHTMLTemplate = "<div class=\"monsterCard\"><table class=\"monsterTable\" ><tr><td colspan=\"2\"><button class=\"selectMonsterButton\" onclick=\"selectMonster(\'[Name]\')\"><h1 class=\"cardHeader\">[Name]</h1></button></td></tr><tr value=\"[Spooky]\"><td><p class=\"cardAttribute\" onmouseenter=\"highlightCards(this)\" onmouseleave=\"clearHighlightedCards()\" onclick=\"defineSpooky()\">Spooky:</p></td><td><p class=\"cardAttributeValue\">[Spooky]</p></td></tr><tr value=\"[Scary]\"><td><p class=\"cardAttribute\" onmouseenter=\"highlightCards(this)\" onmouseleave=\"clearHighlightedCards()\" onclick=\"defineScary()\">Scary:</p></td><td><p class=\"cardAttributeValue\">[Scary]</p></td></tr><tr value=\"[Speedy]\"><td><p class=\"cardAttribute\" onmouseenter=\"highlightCards(this)\" onmouseleave=\"clearHighlightedCards()\" onclick=\"defineSpeedy()\">Speedy:</p></td><td><p class=\"cardAttributeValue\">[Speedy]</p></td></tr><tr value=\"[Greedy]\"><td><p class=\"cardAttribute\" onmouseenter=\"highlightCards(this)\" onmouseleave=\"clearHighlightedCards()\" onclick=\"defineGreedy()\">Greedy:</p></td><td><p class=\"cardAttributeValue\">[Greedy]</p></td></tr><tr value=\"[Costly]\"><td><p class=\"cardAttribute\" onmouseenter=\"highlightCards(this)\" onmouseleave=\"clearHighlightedCards()\" onclick=\"defineCostly()\">Costly:</p></td><td><p class=\"cardAttributeValue\">[Costly]</p></td></tr></table></div>";
 		</script>
 	</body>
 </html>
