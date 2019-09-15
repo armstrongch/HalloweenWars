@@ -27,21 +27,52 @@
 				width: 100%;
 				text-align: center;
 			}
+			.centerAlignTD {
+				text-align: center;
+				padding-left: 20px;
+				padding-right: 20px;
+			}
+			.outlineTR {
+				outline: 1px solid black;
+			}
 		</style>
 	</head>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	
 	<body onload="setup()">
 		<h1 id="info"></h1>
-		<div id="monsterCards">	
+		<div id="draftDiv">
+			<div id="monsterCards">	
+			</div>
+			<div class="monsterCard">
+				<h1>Player 1 Team</h1>
+				<ol id="team1OL"></ol>
+			</div>
+			<div class="monsterCard">
+				<h1>Player 2 Team</h1>
+				<ol id="team2OL"></ol>
+			</div>
 		</div>
-		<div class="monsterCard">
-			<h1>Player 1 Team</h1>
-			<ol id="team1OL"></ol>
-		</div>
-		<div class="monsterCard">
-			<h1>Player 2 Team</h1>
-			<ol id="team2OL"></ol>
+		<div id="controlsDiv" style="display:none">
+			<h3>
+				<table>
+					<th>
+						<td class="centerAlignTD">Player 1</td><td class="centerAlignTD">Player 2</td>
+					</th>
+					<tr class="outlineTR">
+						<td>Select Left Lane</td>
+						<td class="centerAlignTD">A</td><td class="centerAlignTD">Left</td>
+					</tr>
+					<tr class="outlineTR">
+						<td>Select Middle Lane</td>
+						<td class="centerAlignTD">S</td><td class="centerAlignTD">Down</td>
+					</tr>
+					<tr class="outlineTR">
+						<td>Select Right Lane</td>
+						<td class="centerAlignTD">D</td><td class="centerAlignTD">Right</td>
+					</tr>
+				</table>
+			</h3>
 		</div>
 		<script>
 			function defineSpooky()
@@ -104,6 +135,13 @@
 					activePlayerNum = 2;
 				}
 				$('#info').html('It is Player ' + activePlayerNum + '\'s Turn to Pick!');
+				if (pickNum == 10)
+				//if (pickNum == 0)
+				{
+					$('#draftDiv').css('display', 'none');
+					$('#controlsDiv').css('display', 'block');
+					$('#info').html('Controls:');
+				}
 			}
 			
 			function setup()
