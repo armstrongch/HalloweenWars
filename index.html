@@ -75,7 +75,21 @@
 			
 			function selectMonster(name, button)
 			{
-				alert("Test! " + name);
+				button.onclick = null;
+				button.disabled = true;
+				
+				if (activePlayerNum == 1)
+				{
+					$('#team1OL').append('<li>' + name + '</li>');
+					playerOneTeam.push(name);
+				}
+				else
+				{
+					$('#team2OL').append('<li>' + name + '</li>');
+					playerTwoTeam.push(name);
+				}
+				
+				updateDraftStatus();
 			}
 			
 			function updateDraftStatus()
