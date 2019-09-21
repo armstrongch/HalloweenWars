@@ -80,6 +80,31 @@
 		</div>
 		<script>
 			
+			function loadMap()
+			{
+				var map = [];
+				var lineStartIndex = 0;
+				for (let i = 0; i < mapTemplate.length; i++)
+				{
+					if (mapTemplate.charAt(i) == "*")
+					{
+						var mapRow = [];
+						var mapRowText = mapTemplate.substring(lineStartIndex, i);
+						lineStartIndex = i + 1;
+						var cellStartIndex = 0;
+						for (let j = 0; j < mapRowText.length; j++)
+						{
+							if (mapRowText.charAt(j) == ",")
+							{
+								mapRow.push(mapRowText.substring(cellStartIndex, j));
+								cellStartIndex = j + 1;
+							}
+						}
+						map.push(mapRow);
+					}
+				}
+			}
+			
 			function defineSpooky()
 			{
 				alert("The spookier a monster is, the stronger it is in a fight.");
@@ -146,6 +171,8 @@
 					$('#draftDiv').css('display', 'none');
 					$('#controlsDiv').css('display', 'block');
 					$('#info').html('Controls:');
+					
+					loadMap();
 				}
 			}
 			
@@ -252,6 +279,21 @@
 			];
 			
 			var monsterCardHTMLTemplate = "<div class=\"monsterCard\"><table class=\"monsterTable\" ><tr><td colspan=\"2\"><button class=\"selectMonsterButton\" onclick=\"selectMonster(\'[Name]\', this)\"><h1 class=\"cardHeader\">[Name]</h1></button></td></tr><tr value=\"[Spooky]\"><td><p class=\"cardAttribute\" onmouseenter=\"highlightCards(this)\" onmouseleave=\"clearHighlightedCards()\" onclick=\"defineSpooky()\">Spooky:</p></td><td><p class=\"cardAttributeValue\">[Spooky]</p></td></tr><tr value=\"[Scary]\"><td><p class=\"cardAttribute\" onmouseenter=\"highlightCards(this)\" onmouseleave=\"clearHighlightedCards()\" onclick=\"defineScary()\">Scary:</p></td><td><p class=\"cardAttributeValue\">[Scary]</p></td></tr><tr value=\"[Speedy]\"><td><p class=\"cardAttribute\" onmouseenter=\"highlightCards(this)\" onmouseleave=\"clearHighlightedCards()\" onclick=\"defineSpeedy()\">Speedy:</p></td><td><p class=\"cardAttributeValue\">[Speedy]</p></td></tr><tr value=\"[Greedy]\"><td><p class=\"cardAttribute\" onmouseenter=\"highlightCards(this)\" onmouseleave=\"clearHighlightedCards()\" onclick=\"defineGreedy()\">Greedy:</p></td><td><p class=\"cardAttributeValue\">[Greedy]</p></td></tr><tr value=\"[Costly]\"><td><p class=\"cardAttribute\" onmouseenter=\"highlightCards(this)\" onmouseleave=\"clearHighlightedCards()\" onclick=\"defineCostly()\">Costly:</p></td><td><p class=\"cardAttributeValue\">[Costly]</p></td></tr></table></div>";
+			
+			var mapTemplate = 
+			"E,E,C1,E,LR1DR,LR1LR,LR1LD,E,E,E,E,E,E*"+
+			"E,LL1SD,LM1,LR1SR,LR1LU,M,LR1UD,M,LR1DR,LR1LR,LR1LR,LR1LD,G2G1*"+
+			"E,LL1UD,LM1,LM1,E,E,LR1UR,LR1LR,LR1LR,E,E,G2E,G2G2*"+
+			"E,LL1UD,E,LM1,LM1,E,E,M,M,E,E,LR2DU,G2G3*"+
+			"E,LL1UD,E,E,LM1,LM1,M,M,M,E,E,LR2DU,G2G4*"+
+			"E,LL1UD,E,E,E,LM1,LM1,M,E,E,E,LR2DU,G2G5*"+
+			"E,LL1UD,E,E,E,E,LM0,E,E,E,LR2DR,LR2LU,G2G6*"+
+			"E,LL1UD,E,E,E,M,LM2,LM2,E,E,LR2DU,M,E*"+
+			"G1G1,LL1UD,E,E,M,M,M,LM2,LM2,E,LR2LU,LR2RL,LR2DR*"+
+			"G1G2,LL1UD,E,E,M,M,E,E,LM2,LM2,E,M,LR2DU*"+
+			"G1G3,G1E,E,E,E,E,E,E,E,LM2,LM2,LR2DR,LR2LU*"+
+			"G1G4,LL2RU,LL2RL,LL2RL,LL2RL,LL2RL,LL2RL,LL2RL,LL2RL,LL2SL,LM2,LR2SU,E*"+
+			"E,E,E,E,E,E,E,E,E,E,C2,E,E*";
 			
 		</script>
 	</body>
