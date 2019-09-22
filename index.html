@@ -83,6 +83,12 @@
 			</h3>
 			<h1>Instructions:</h1>
 			<h3>[Insert Instructions Here]</h3>
+			<button onclick="continueFromInstructions()"><h3>Continue</h3></button>
+		</div>
+		<div id="mapDiv" style="display:none">
+			<h3>Resize map:</h3>
+			<input type="range" name="mapSizeRange" min="48" max="128" step="8" style="width: 50%" value="64" oninput="resizeMap(this.value)">
+			<br/>
 			<canvas id="mapCanvas" width="0" height="0"></canvas>
 		</div>
 		<script>
@@ -91,6 +97,19 @@
 			var mapCanvas = $("#mapCanvas")[0];
 			var ctx = mapCanvas.getContext("2d");
 			var spaceSize = 64;
+			
+			function resizeMap(value)
+			{
+				spaceSize = Number(value);
+				drawMap();
+			}
+			
+			function continueFromInstructions()
+			{
+				$('#info').html('Game:');
+				$('#controlsDiv').css('display', 'none');
+				$('#mapDiv').css('display', 'block');
+			}
 			
 			function loadMap()
 			{
@@ -116,10 +135,6 @@
 						map.push(mapRow);
 					}
 				}
-				
-				mapCanvas.width = map[0].length * spaceSize;
-				mapCanvas.height = map.length * spaceSize;
-				
 			}
 			
 			function mapSpace(initText)
@@ -173,6 +188,12 @@
 			
 			function drawMap()
 			{
+				mapCanvas.width = map[0].length * spaceSize;
+				mapCanvas.height = map.length * spaceSize;
+				
+				
+				ctx.clearRect(0,0,mapCanvas.width, mapCanvas.height);
+				
 				for (let i = 0; i < map.length; i++)
 				{
 					for (let j = 0; j < map[0].length; j++)
@@ -235,7 +256,6 @@
 										break;
 								}
 								
-								ctx.closePath();
 								ctx.stroke();
 								break;
 							case "Empty":
@@ -312,7 +332,6 @@
 								ctx.lineTo(xOrigin + spaceSize, yOrigin + spaceSize*0.8);
 								
 								ctx.stroke();
-								
 								break;
 							case "Castle":
 								ctx.beginPath();
@@ -353,11 +372,6 @@
 						}
 					}
 				}
-				
-			}
-			
-			function directionToSpaceCoordinateStroke(dir, xOrigin, yOrigin)
-			{
 				
 			}
 			
