@@ -278,7 +278,6 @@
 								ctx.lineTo(xOrigin + spaceSize*0.25 + spaceSize/4, yOrigin + spaceSize*0.5 + spaceSize*0.45 - flipTrees*spaceSize*0.5);
 								ctx.closePath();
 								ctx.stroke();
-								
 								break;
 							case "Grave":
 								ctx.beginPath();
@@ -296,7 +295,56 @@
 								
 								ctx.textAlign = "center";
 								ctx.font = spaceSize*0.2 + "px Arial";
-								ctx.strokeText("RIP", xOrigin + spaceSize * 0.5, yOrigin + spaceSize * 0.5);
+								ctx.fillText("RIP", xOrigin + spaceSize * 0.5, yOrigin + spaceSize * 0.5);
+								break;
+							case "Graveyard":
+								ctx.beginPath();
+								for (let i = 1; i < 6; i++)
+								{
+									ctx.moveTo(xOrigin + i*spaceSize/6, yOrigin + spaceSize*0.3);
+									ctx.lineTo(xOrigin + i*spaceSize/6, yOrigin + spaceSize*0.9);
+								}
+								
+								ctx.moveTo(xOrigin, yOrigin + spaceSize*0.4);
+								ctx.lineTo(xOrigin + spaceSize, yOrigin + spaceSize*0.4);
+								
+								ctx.moveTo(xOrigin, yOrigin + spaceSize*0.8);
+								ctx.lineTo(xOrigin + spaceSize, yOrigin + spaceSize*0.8);
+								
+								ctx.stroke();
+								
+								break;
+							case "Castle":
+								ctx.beginPath();
+								ctx.moveTo(xOrigin + spaceSize*0.1, yOrigin + spaceSize*0.1);
+								ctx.lineTo(xOrigin + spaceSize*0.1, yOrigin + spaceSize*0.4);
+								ctx.lineTo(xOrigin + spaceSize*0.2, yOrigin + spaceSize*0.5);
+								ctx.lineTo(xOrigin + spaceSize*0.2, yOrigin + spaceSize*0.7);
+								ctx.lineTo(xOrigin + spaceSize*0.1, yOrigin + spaceSize*0.8);
+								ctx.lineTo(xOrigin + spaceSize*0.1, yOrigin + spaceSize*0.9);
+								ctx.lineTo(xOrigin + spaceSize*0.9, yOrigin + spaceSize*0.9);
+								ctx.lineTo(xOrigin + spaceSize*0.9, yOrigin + spaceSize*0.8);
+								ctx.lineTo(xOrigin + spaceSize*0.8, yOrigin + spaceSize*0.7);
+								ctx.lineTo(xOrigin + spaceSize*0.8, yOrigin + spaceSize*0.5);
+								ctx.lineTo(xOrigin + spaceSize*0.9, yOrigin + spaceSize*0.4);
+								ctx.lineTo(xOrigin + spaceSize*0.9, yOrigin + spaceSize*0.1);
+								ctx.lineTo(xOrigin + spaceSize*0.70, yOrigin + spaceSize*0.1);
+								ctx.lineTo(xOrigin + spaceSize*0.70, yOrigin + spaceSize*0.3);
+								ctx.lineTo(xOrigin + spaceSize*0.60, yOrigin + spaceSize*0.3);
+								ctx.lineTo(xOrigin + spaceSize*0.60, yOrigin + spaceSize*0.1);
+								ctx.lineTo(xOrigin + spaceSize*0.40, yOrigin + spaceSize*0.1);
+								ctx.lineTo(xOrigin + spaceSize*0.40, yOrigin + spaceSize*0.3);
+								ctx.lineTo(xOrigin + spaceSize*0.30, yOrigin + spaceSize*0.3);
+								ctx.lineTo(xOrigin + spaceSize*0.30, yOrigin + spaceSize*0.1);
+								ctx.closePath();
+								ctx.stroke();
+								
+								ctx.beginPath();
+								ctx.moveTo(xOrigin + spaceSize*0.35, yOrigin + spaceSize*0.9);
+								ctx.lineTo(xOrigin + spaceSize*0.35, yOrigin + spaceSize*0.6);
+								ctx.arc(xOrigin + spaceSize*0.5, yOrigin + spaceSize*0.6, spaceSize*0.15, Math.PI, 0);
+								ctx.lineTo(xOrigin + spaceSize*0.65, yOrigin + spaceSize*0.9);
+								ctx.stroke();
 								
 								break;
 							default:
