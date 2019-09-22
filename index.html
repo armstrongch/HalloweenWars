@@ -39,6 +39,10 @@
 			canvas {
 				outline: 1px solid black;
 			}
+			.keypadTD {
+				text-align: center;
+				vertical-align: middle;
+			}
 		</style>
 	</head>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -89,13 +93,51 @@
 			<h3>Resize map:</h3>
 			<input type="range" name="mapSizeRange" min="48" max="128" step="8" style="width: 50%" value="64" oninput="resizeMap(this.value)">
 			<br/>
-			<canvas id="mapCanvas" width="0" height="0"></canvas>
+			<table>
+				<tr>
+					<td class="keypadTD"><h3>1</h3></td>
+					<td class="keypadTD"><h3>2</h3></td>
+					<td class="keypadTD"><h3>3</h3></td>
+					<td class="keypadTD"><h3>4</h3></td>
+					<td class="keypadTD"><h3>5</h3></td>
+				</tr>
+				<tr>
+					<td colspan="5">
+						<canvas id="monsterCanvas1"></canvas>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="5">
+						<canvas id="mapCanvas" width="0" height="0"></canvas>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="5">
+						<canvas id="monsterCanvas2"></canvas>
+					</td>
+				</tr>
+				<tr>
+					<td class="keypadTD"><h3>1</h3></td>
+					<td class="keypadTD"><h3>2</h3></td>
+					<td class="keypadTD"><h3>3</h3></td>
+					<td class="keypadTD"><h3>4</h3></td>
+					<td class="keypadTD"><h3>5</h3></td>
+				</tr>
+			</table>
 		</div>
 		<script>
 			
 			var map = [];
+			
 			var mapCanvas = $("#mapCanvas")[0];
 			var ctx = mapCanvas.getContext("2d");
+			
+			var monsterCanvas1 = $("#monsterCanvas1")[0];
+			var ctx = mapCanvas.getContext("2d");
+			
+			var monsterCanvas2 = $("#monsterCanvas2")[0];
+			var ctx = mapCanvas.getContext("2d");
+			
 			var spaceSize = 64;
 			
 			function resizeMap(value)
@@ -191,6 +233,11 @@
 				mapCanvas.width = map[0].length * spaceSize;
 				mapCanvas.height = map.length * spaceSize;
 				
+				monsterCanvas1.width = mapCanvas.width;
+				monsterCanvas1.height = spaceSize;
+				
+				monsterCanvas2.width = mapCanvas.width;
+				monsterCanvas2.height = spaceSize;
 				
 				ctx.clearRect(0,0,mapCanvas.width, mapCanvas.height);
 				
@@ -202,6 +249,7 @@
 						var xOrigin = j * spaceSize;
 						var yOrigin = i * spaceSize;
 						ctx.strokeStyle = "black";
+						ctx.fillStyle = "black";
 						var flipTrees = (j+(i%2))%2;
 						
 						switch (mapSpace.name)
@@ -209,9 +257,9 @@
 							case "Mountain":
 								
 								ctx.beginPath();
-								ctx.moveTo(xOrigin + spaceSize/2, yOrigin + spaceSize * 0.2);
-								ctx.lineTo(xOrigin + spaceSize * 0.8, yOrigin + spaceSize * 0.8);
-								ctx.lineTo(xOrigin + spaceSize * 0.2, yOrigin + spaceSize * 0.8);
+								ctx.moveTo(xOrigin + spaceSize/2, yOrigin + spaceSize*0.2);
+								ctx.lineTo(xOrigin + spaceSize*0.8, yOrigin + spaceSize*0.8);
+								ctx.lineTo(xOrigin + spaceSize*0.2, yOrigin + spaceSize*0.8);
 								ctx.closePath();
 								ctx.stroke();
 								break;
@@ -257,6 +305,62 @@
 								}
 								
 								ctx.stroke();
+								
+								if (mapSpace.fromDir == "S")
+								{
+									ctx.fillStyle = "white";
+									ctx.fillRect(xOrigin + spaceSize*0.1, yOrigin + spaceSize*0.1, spaceSize*0.8, spaceSize*0.8);
+									ctx.fillStyle = "black";
+									ctx.strokeRect(xOrigin + spaceSize*0.1, yOrigin + spaceSize*0.1, spaceSize*0.8, spaceSize*0.8);
+									
+									if (mapSpace.team == 1)
+									{
+										ctx.textAlign = "center";
+										ctx.font = spaceSize*0.3 + "px Arial";
+										if (mapSpace.side == "Left")
+										{
+											ctx.fillText("A", xOrigin + spaceSize * 0.5, yOrigin + spaceSize * 0.5);
+										}
+										else if (mapSpace.side == "Middle")
+										{
+											ctx.fillText("S", xOrigin + spaceSize * 0.5, yOrigin + spaceSize * 0.5);
+										}
+										else
+										{
+											ctx.fillText("D", xOrigin + spaceSize * 0.5, yOrigin + spaceSize * 0.5);
+										}
+									}
+									else
+									{
+										if (mapSpace.side == "Left")
+										{
+											ctx.beginPath();
+											ctx.moveTo(xOrigin + spaceSize*0.3, yOrigin + spaceSize/2);
+											ctx.lineTo(xOrigin + spaceSize*0.7, yOrigin + spaceSize*0.3);
+											ctx.lineTo(xOrigin + spaceSize*0.7, yOrigin + spaceSize*0.7);
+											ctx.closePath();
+											ctx.stroke();
+										}
+										else if (mapSpace.side == "Middle")
+										{
+											ctx.beginPath();
+											ctx.moveTo(xOrigin + spaceSize/2, yOrigin + spaceSize*0.3);
+											ctx.lineTo(xOrigin + spaceSize*0.7, yOrigin + spaceSize*0.7);
+											ctx.lineTo(xOrigin + spaceSize*0.3, yOrigin + spaceSize*0.7);
+											ctx.closePath();
+											ctx.stroke();
+										}
+										else
+										{
+											ctx.beginPath();
+											ctx.moveTo(xOrigin + spaceSize*0.7, yOrigin + spaceSize/2);
+											ctx.lineTo(xOrigin + spaceSize*0.3, yOrigin + spaceSize*0.3);
+											ctx.lineTo(xOrigin + spaceSize*0.3, yOrigin + spaceSize*0.7);
+											ctx.closePath();
+											ctx.stroke();
+										}
+									}
+								}
 								break;
 							case "Empty":
 								
@@ -436,6 +540,10 @@
 				}
 				$('#info').html('It is Player ' + activePlayerNum + '\'s Turn to Pick!');
 				if (pickNum == 10)
+				
+				//playerOneTeam = ["Goblin", "Werewolf", "Gargoyle", "Swamp Monster", "Pumpkin King"];
+				//playerTwoTeam = ["Skeleton", "Frankenstein", "Ghost", "Dracula", "Devil"];
+				
 				//if (pickNum == 0)
 				{
 					$('#draftDiv').css('display', 'none');
