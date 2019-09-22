@@ -35,6 +35,10 @@
 			.outlineTR {
 				outline: 1px solid black;
 			}
+			
+			canvas {
+				outline: 1px solid black;
+			}
 		</style>
 	</head>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -77,12 +81,20 @@
 					</tr>
 				</table>
 			</h3>
+			<h1>Instructions:</h1>
+			<h3>[Insert Instructions Here]</h3>
+			<canvas id="mapCanvas" width="0" height="0"></canvas>
 		</div>
 		<script>
 			
+			var map = [];
+			var mapCanvas = $("#mapCanvas")[0];
+			var ctx = mapCanvas.getContext("2d");
+			var spaceSize = 32;
+			
 			function loadMap()
 			{
-				var map = [];
+				map = [];
 				var lineStartIndex = 0;
 				for (let i = 0; i < mapTemplate.length; i++)
 				{
@@ -92,17 +104,150 @@
 						var mapRowText = mapTemplate.substring(lineStartIndex, i);
 						lineStartIndex = i + 1;
 						var cellStartIndex = 0;
-						for (let j = 0; j < mapRowText.length; j++)
+						for (let j = 0; j <= mapRowText.length; j++)
 						{
 							if (mapRowText.charAt(j) == ",")
 							{
-								mapRow.push(mapRowText.substring(cellStartIndex, j));
+								var newMapSpace = new mapSpace(mapRowText.substring(cellStartIndex, j));
+								mapRow.push(newMapSpace);
 								cellStartIndex = j + 1;
 							}
 						}
 						map.push(mapRow);
 					}
 				}
+				
+				mapCanvas.width = map[0].length * spaceSize;
+				mapCanvas.height = map.length * spaceSize;
+				
+			}
+			
+			function mapSpace(initText)
+			{
+				switch (initText.charAt(0))
+				{
+					case "E":
+						this.name = "Empty";
+						break;
+					case "G":
+						if (initText.length == 4)
+						{
+							this.name = "Grave";
+							this.graveYardnum = initText.charAt(1);
+							this.graveNum = initText.charAt(3);
+							
+						}
+						else
+						{
+							this.name = "Graveyard";
+							this.graveYardnum = initText.charAt(1);
+						}
+						break;
+					case "L":
+						this.name = "Lane";
+						switch (initText.charAt(1))
+						{
+							case "L":
+								this.side = "Left";
+								break;
+							case "M":
+								this.side = "Middle";
+								break;
+							case "R":
+								this.side = "Right";
+								break;
+						}
+						this.team = initText.charAt(2);
+						this.fromDir = initText.charAt(3);
+						this.toDir = initText.charAt(4);
+						break;
+					case "M":
+						this.name = "Mountain";
+						break;
+					case "C":
+						this.name = "Castle";
+						this.team = initText.charAt(1);
+						break;
+				}
+			}
+			
+			function drawMap()
+			{
+				for (let i = 0; i < map.length; i++)
+				{
+					for (let j = 0; j < map[0].length; j++)
+					{
+						var mapSpace = map[i][j];
+						var xOrigin = j * spaceSize;
+						var yOrigin = i * spaceSize;
+						ctx.strokeStyle = "black";
+						switch (mapSpace.name)
+						{
+							case "Mountain":
+								
+								ctx.beginPath();
+								ctx.moveTo(xOrigin + spaceSize/2, yOrigin + spaceSize * 0.2);
+								ctx.lineTo(xOrigin + spaceSize * 0.8, yOrigin + spaceSize * 0.8);
+								ctx.lineTo(xOrigin + spaceSize * 0.2, yOrigin + spaceSize * 0.8);
+								ctx.closePath();
+								ctx.stroke();
+								break;
+							case "Lane":
+								ctx.beginPath();
+								
+								switch(mapSpace.fromDir)
+								{
+									case "U":
+										ctx.moveTo(xOrigin + spaceSize/2, yOrigin);
+										break;
+									case "D":
+										ctx.moveTo(xOrigin + spaceSize/2, yOrigin + spaceSize);
+										break;
+									case "L":
+										ctx.moveTo(xOrigin, yOrigin + spaceSize/2);
+										break;
+									case "R":
+										ctx.moveTo(xOrigin + spaceSize, yOrigin + spaceSize/2);
+										break;
+									case "S":
+										ctx.moveTo(xOrigin + spaceSize/2, yOrigin + spaceSize/2);
+										break;
+								}
+								
+								switch(mapSpace.toDir)
+								{
+									case "U":
+										ctx.lineTo(xOrigin + spaceSize/2, yOrigin);
+										break;
+									case "D":
+										ctx.lineTo(xOrigin + spaceSize/2, yOrigin + spaceSize);
+										break;
+									case "L":
+										ctx.lineTo(xOrigin, yOrigin + spaceSize/2);
+										break;
+									case "R":
+										ctx.lineTo(xOrigin + spaceSize, yOrigin + spaceSize/2);
+										break;
+									case "S":
+										ctx.lineTo(xOrigin + spaceSize/2, yOrigin + spaceSize/2);
+										break;
+								}
+								
+								ctx.closePath();
+								ctx.stroke();
+								break;
+							default:
+								//ctx.strokeRect(xOrigin, yOrigin, spaceSize, spaceSize);
+								break;
+						}
+					}
+				}
+				
+			}
+			
+			function directionToSpaceCoordinateStroke(dir, xOrigin, yOrigin)
+			{
+				
 			}
 			
 			function defineSpooky()
@@ -173,6 +318,7 @@
 					$('#info').html('Controls:');
 					
 					loadMap();
+					drawMap();
 				}
 			}
 			
@@ -281,19 +427,20 @@
 			var monsterCardHTMLTemplate = "<div class=\"monsterCard\"><table class=\"monsterTable\" ><tr><td colspan=\"2\"><button class=\"selectMonsterButton\" onclick=\"selectMonster(\'[Name]\', this)\"><h1 class=\"cardHeader\">[Name]</h1></button></td></tr><tr value=\"[Spooky]\"><td><p class=\"cardAttribute\" onmouseenter=\"highlightCards(this)\" onmouseleave=\"clearHighlightedCards()\" onclick=\"defineSpooky()\">Spooky:</p></td><td><p class=\"cardAttributeValue\">[Spooky]</p></td></tr><tr value=\"[Scary]\"><td><p class=\"cardAttribute\" onmouseenter=\"highlightCards(this)\" onmouseleave=\"clearHighlightedCards()\" onclick=\"defineScary()\">Scary:</p></td><td><p class=\"cardAttributeValue\">[Scary]</p></td></tr><tr value=\"[Speedy]\"><td><p class=\"cardAttribute\" onmouseenter=\"highlightCards(this)\" onmouseleave=\"clearHighlightedCards()\" onclick=\"defineSpeedy()\">Speedy:</p></td><td><p class=\"cardAttributeValue\">[Speedy]</p></td></tr><tr value=\"[Greedy]\"><td><p class=\"cardAttribute\" onmouseenter=\"highlightCards(this)\" onmouseleave=\"clearHighlightedCards()\" onclick=\"defineGreedy()\">Greedy:</p></td><td><p class=\"cardAttributeValue\">[Greedy]</p></td></tr><tr value=\"[Costly]\"><td><p class=\"cardAttribute\" onmouseenter=\"highlightCards(this)\" onmouseleave=\"clearHighlightedCards()\" onclick=\"defineCostly()\">Costly:</p></td><td><p class=\"cardAttributeValue\">[Costly]</p></td></tr></table></div>";
 			
 			var mapTemplate = 
-			"E,E,C1,E,LR1DR,LR1LR,LR1LD,E,E,E,E,E,E*"+
-			"E,LL1SD,LM1,LR1SR,LR1LU,M,LR1UD,M,LR1DR,LR1LR,LR1LR,LR1LD,G2G1*"+
-			"E,LL1UD,LM1,LM1,E,E,LR1UR,LR1LR,LR1LR,E,E,G2E,G2G2*"+
-			"E,LL1UD,E,LM1,LM1,E,E,M,M,E,E,LR2DU,G2G3*"+
-			"E,LL1UD,E,E,LM1,LM1,M,M,M,E,E,LR2DU,G2G4*"+
-			"E,LL1UD,E,E,E,LM1,LM1,M,E,E,E,LR2DU,G2G5*"+
-			"E,LL1UD,E,E,E,E,LM0,E,E,E,LR2DR,LR2LU,G2G6*"+
-			"E,LL1UD,E,E,E,M,LM2,LM2,E,E,LR2DU,M,E*"+
-			"G1G1,LL1UD,E,E,M,M,M,LM2,LM2,E,LR2LU,LR2RL,LR2DR*"+
-			"G1G2,LL1UD,E,E,M,M,E,E,LM2,LM2,E,M,LR2DU*"+
-			"G1G3,G1E,E,E,E,E,E,E,E,LM2,LM2,LR2DR,LR2LU*"+
-			"G1G4,LL2RU,LL2RL,LL2RL,LL2RL,LL2RL,LL2RL,LL2RL,LL2RL,LL2SL,LM2,LR2SU,E*"+
-			"E,E,E,E,E,E,E,E,E,E,C2,E,E*";
+			
+			"E,E,C1,E,LR1DR,LR1LR,LR1LD,E,E,E,E,E,E,*"+
+			"E,LL1SD,LM1SD,LR1SR,LR1LU,M,LR1UD,M,LR1DR,LR1LR,LR1LR,LR1LD,G2G1,*"+
+			"E,LL1UD,LM1UR,LM1LD,E,E,LR1UR,LR1LR,LR1LU,E,E,G2E,G2G2,*"+
+			"E,LL1UD,E,LM1UR,LM1LD,E,E,M,M,E,E,LR2DU,G2G3,*"+
+			"E,LL1UD,E,E,LM1UR,LM1LD,M,M,M,E,E,LR2DU,G2G4,*"+
+			"E,LL1UD,E,E,E,LM1UR,LM1LD,M,E,E,E,LR2DU,G2G5,*"+
+			"E,LL1UD,E,E,E,E,LM0UD,E,E,E,LR2DR,LR2LU,G2G6,*"+
+			"E,LL1UD,E,E,E,M,LM2RU,LM2DL,E,E,LR2DU,M,E,*"+
+			"G1G1,LL1UD,E,E,M,M,M,LM2RU,LM2DL,E,LR2RU,LR2RL,LR2DL,*"+
+			"G1G2,LL1UD,E,E,M,M,E,E,LM2RU,LM2DL,E,M,LR2DU,*"+
+			"G1G3,G1E,E,E,E,E,E,E,E,LM2RU,LM2DL,LR2DR,LR2LU,*"+
+			"G1G4,LL2RU,LL2RL,LL2RL,LL2RL,LL2RL,LL2RL,LL2RL,LL2RL,LL2SL,LM2SU,LR2SU,E,*"+
+			"E,E,E,E,E,E,E,E,E,E,C2,E,E,*";
 			
 		</script>
 	</body>
