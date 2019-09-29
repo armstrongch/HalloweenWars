@@ -36,9 +36,6 @@
 				outline: 1px solid black;
 			}
 			
-			canvas {
-				outline: 1px solid black;
-			}
 			.keypadTD {
 				text-align: center;
 				vertical-align: middle;
@@ -95,33 +92,19 @@
 			<br/>
 			<table>
 				<tr>
-					<td class="keypadTD"><h3>1</h3></td>
-					<td class="keypadTD"><h3>2</h3></td>
-					<td class="keypadTD"><h3>3</h3></td>
-					<td class="keypadTD"><h3>4</h3></td>
-					<td class="keypadTD"><h3>5</h3></td>
-				</tr>
-				<tr>
-					<td colspan="5">
+					<td>
 						<canvas id="monsterCanvas1"></canvas>
 					</td>
 				</tr>
 				<tr>
-					<td colspan="5">
+					<td>
 						<canvas id="mapCanvas" width="0" height="0"></canvas>
 					</td>
 				</tr>
 				<tr>
-					<td colspan="5">
+					<td>
 						<canvas id="monsterCanvas2"></canvas>
 					</td>
-				</tr>
-				<tr>
-					<td class="keypadTD"><h3>1</h3></td>
-					<td class="keypadTD"><h3>2</h3></td>
-					<td class="keypadTD"><h3>3</h3></td>
-					<td class="keypadTD"><h3>4</h3></td>
-					<td class="keypadTD"><h3>5</h3></td>
 				</tr>
 			</table>
 		</div>
@@ -133,10 +116,10 @@
 			var ctx = mapCanvas.getContext("2d");
 			
 			var monsterCanvas1 = $("#monsterCanvas1")[0];
-			var ctx = mapCanvas.getContext("2d");
+			var ctx1 = monsterCanvas1.getContext("2d");
 			
 			var monsterCanvas2 = $("#monsterCanvas2")[0];
-			var ctx = mapCanvas.getContext("2d");
+			var ctx2 = monsterCanvas1.getContext("2d");
 			
 			var spaceSize = 32;
 			
@@ -477,6 +460,93 @@
 					}
 				}
 				
+				ctx1.clearRect(0,0, monsterCanvas1.width, monsterCanvas1.height);
+				ctx2.clearRect(0,0, monsterCanvas2.width, monsterCanvas2.height);
+				
+				ctx1.textAlign = "center";
+				ctx1.font = spaceSize*0.3 + "px Arial";
+				for (let i = 0; i < playerOneTeam.length; i++)
+				{
+					var xOrigin = i*monsterCanvas1.width*0.2;
+					var yOrigin = 0;
+					ctx1.strokeStyle = "black";
+					
+					ctx1.strokeRect(xOrigin + spaceSize*0.1, yOrigin + spaceSize*0.1, spaceSize*0.8, spaceSize*0.8);
+					ctx1.fillText(i+1, xOrigin + spaceSize * 0.5, yOrigin + spaceSize * 0.5);
+					
+					xOrigin += monsterCanvas1.width*0.1;
+					yOrigin = 0;
+					drawMonster(ctx1, xOrigin + spaceSize*0.05, yOrigin + spaceSize*0.05, spaceSize*0.9, playerOneTeam[i]);
+				}
+			}
+			
+			function drawMonster(ctx, xOrigin, yOrigin, spaceSize, monsterName)
+			{
+				ctx.clearRect(xOrigin, yOrigin, spaceSize, spaceSize);
+				switch (monsterName)
+				{
+					case "Skeleton":
+						drawEllipseByCenter(ctx, xOrigin + spaceSize*0.5, yOrigin + spaceSize*0.1, spaceSize*0.4, spaceSize*0.2);
+						ctx.clearRect(xOrigin, yOrigin + spaceSize*0.1, xOrigin, yOrigin + spaceSize);
+						
+						ctx.beginPath();
+						//Teeth
+						ctx.moveTo(xOrigin + spaceSize*0.3, yOrigin + spaceSize*0.1);
+						ctx.lineTo(xOrigin + spaceSize*0.3, yOrigin + spaceSize*0.3);
+						ctx.lineTo(xOrigin + spaceSize*0.3 + (spaceSize*0.4*1/5), yOrigin + spaceSize*0.3);
+						ctx.lineTo(xOrigin + spaceSize*0.3 + (spaceSize*0.4*1/5), yOrigin + spaceSize*0.2);
+						ctx.lineTo(xOrigin + spaceSize*0.3 + (spaceSize*0.4*2/5), yOrigin + spaceSize*0.2);
+						ctx.lineTo(xOrigin + spaceSize*0.3 + (spaceSize*0.4*2/5), yOrigin + spaceSize*0.3);
+						ctx.lineTo(xOrigin + spaceSize*0.3 + (spaceSize*0.4*3/5), yOrigin + spaceSize*0.3);
+						ctx.lineTo(xOrigin + spaceSize*0.3 + (spaceSize*0.4*3/5), yOrigin + spaceSize*0.2);
+						ctx.lineTo(xOrigin + spaceSize*0.3 + (spaceSize*0.4*4/5), yOrigin + spaceSize*0.2);
+						ctx.lineTo(xOrigin + spaceSize*0.3 + (spaceSize*0.4*4/5), yOrigin + spaceSize*0.3);
+						ctx.lineTo(xOrigin + spaceSize*0.3 + (spaceSize*0.4), yOrigin + spaceSize*0.3);
+						ctx.lineTo(xOrigin + spaceSize*0.3 + (spaceSize*0.4), yOrigin + spaceSize*0.1);
+						
+						//Body
+						ctx.moveTo(xOrigin + spaceSize*0.5, yOrigin + spaceSize*0.3);
+						ctx.lineTo(xOrigin + spaceSize*0.5, yOrigin + spaceSize*0.7);
+						ctx.moveTo(xOrigin + spaceSize*0.4, yOrigin + spaceSize*0.4);
+						ctx.lineTo(xOrigin + spaceSize*0.6, yOrigin + spaceSize*0.4);
+						ctx.moveTo(xOrigin + spaceSize*0.4, yOrigin + spaceSize*0.5);
+						ctx.lineTo(xOrigin + spaceSize*0.6, yOrigin + spaceSize*0.5);
+						ctx.moveTo(xOrigin + spaceSize*0.4, yOrigin + spaceSize*0.6);
+						ctx.lineTo(xOrigin + spaceSize*0.6, yOrigin + spaceSize*0.6);
+						
+						//Left Boot
+						ctx.moveTo(xOrigin + spaceSize*0.1, yOrigin + spaceSize);
+						ctx.lineTo(xOrigin + spaceSize*0.45, yOrigin + spaceSize);
+						ctx.lineTo(xOrigin + spaceSize*0.45, yOrigin + spaceSize*0.7);
+						ctx.lineTo(xOrigin + spaceSize*0.35, yOrigin + spaceSize*0.7);
+						ctx.lineTo(xOrigin + spaceSize*0.35, yOrigin + spaceSize*0.8);
+						ctx.lineTo(xOrigin + spaceSize*0.35, yOrigin + spaceSize*0.8);
+						ctx.lineTo(xOrigin + spaceSize*0.1, yOrigin + spaceSize);
+						
+						//Right Boot
+						ctx.moveTo(xOrigin + spaceSize*0.9, yOrigin + spaceSize);
+						ctx.lineTo(xOrigin + spaceSize*0.55, yOrigin + spaceSize);
+						ctx.lineTo(xOrigin + spaceSize*0.55, yOrigin + spaceSize*0.7);
+						ctx.lineTo(xOrigin + spaceSize*0.65, yOrigin + spaceSize*0.7);
+						ctx.lineTo(xOrigin + spaceSize*0.65, yOrigin + spaceSize*0.8);
+						ctx.lineTo(xOrigin + spaceSize*0.65, yOrigin + spaceSize*0.8);
+						ctx.lineTo(xOrigin + spaceSize*0.9, yOrigin + spaceSize);
+						
+						ctx.stroke();
+						break;
+					case "Werewolf":
+					case "Gargoyle":
+					case "Swamp Monster":
+					case "Pumpkin King":
+					case "Goblin":
+					case "Frankenstein":
+					case "Ghost":
+					case "Dracula":
+					case "Devil":
+					default:
+						ctx.strokeRect(xOrigin + spaceSize*0.1, yOrigin + spaceSize*0.1, spaceSize*0.8, spaceSize*0.8);
+						break;
+				}
 			}
 			
 			function defineSpooky()
@@ -541,8 +611,8 @@
 				$('#info').html('It is Player ' + activePlayerNum + '\'s Turn to Pick!');
 				if (pickNum == 10)
 				
-				//playerOneTeam = ["Goblin", "Werewolf", "Gargoyle", "Swamp Monster", "Pumpkin King"];
-				//playerTwoTeam = ["Skeleton", "Frankenstein", "Ghost", "Dracula", "Devil"];
+				//playerOneTeam = ["Skeleton", "Werewolf", "Gargoyle", "Swamp Monster", "Pumpkin King"];
+				//playerTwoTeam = ["Goblin", "Frankenstein", "Ghost", "Dracula", "Devil"];
 				
 				//if (pickNum == 0)
 				{
@@ -658,6 +728,30 @@
 			];
 			
 			var monsterCardHTMLTemplate = "<div class=\"monsterCard\"><table class=\"monsterTable\" ><tr><td colspan=\"2\"><button class=\"selectMonsterButton\" onclick=\"selectMonster(\'[Name]\', this)\"><h1 class=\"cardHeader\">[Name]</h1></button></td></tr><tr value=\"[Spooky]\"><td><p class=\"cardAttribute\" onmouseenter=\"highlightCards(this)\" onmouseleave=\"clearHighlightedCards()\" onclick=\"defineSpooky()\">Spooky:</p></td><td><p class=\"cardAttributeValue\">[Spooky]</p></td></tr><tr value=\"[Scary]\"><td><p class=\"cardAttribute\" onmouseenter=\"highlightCards(this)\" onmouseleave=\"clearHighlightedCards()\" onclick=\"defineScary()\">Scary:</p></td><td><p class=\"cardAttributeValue\">[Scary]</p></td></tr><tr value=\"[Speedy]\"><td><p class=\"cardAttribute\" onmouseenter=\"highlightCards(this)\" onmouseleave=\"clearHighlightedCards()\" onclick=\"defineSpeedy()\">Speedy:</p></td><td><p class=\"cardAttributeValue\">[Speedy]</p></td></tr><tr value=\"[Greedy]\"><td><p class=\"cardAttribute\" onmouseenter=\"highlightCards(this)\" onmouseleave=\"clearHighlightedCards()\" onclick=\"defineGreedy()\">Greedy:</p></td><td><p class=\"cardAttributeValue\">[Greedy]</p></td></tr><tr value=\"[Costly]\"><td><p class=\"cardAttribute\" onmouseenter=\"highlightCards(this)\" onmouseleave=\"clearHighlightedCards()\" onclick=\"defineCostly()\">Costly:</p></td><td><p class=\"cardAttributeValue\">[Costly]</p></td></tr></table></div>";
+			
+			//From: https://stackoverflow.com/questions/2172798/how-to-draw-an-oval-in-html5-canvas
+			function drawEllipseByCenter(ctx, cx, cy, w, h) {
+			  drawEllipse(ctx, cx - w/2.0, cy - h/2.0, w, h);
+			}
+
+			function drawEllipse(ctx, x, y, w, h) {
+			  var kappa = .5522848,
+				  ox = (w / 2) * kappa, // control point offset horizontal
+				  oy = (h / 2) * kappa, // control point offset vertical
+				  xe = x + w,           // x-end
+				  ye = y + h,           // y-end
+				  xm = x + w / 2,       // x-middle
+				  ym = y + h / 2;       // y-middle
+
+			  ctx.beginPath();
+			  ctx.moveTo(x, ym);
+			  ctx.bezierCurveTo(x, ym - oy, xm - ox, y, xm, y);
+			  ctx.bezierCurveTo(xm + ox, y, xe, ym - oy, xe, ym);
+			  ctx.bezierCurveTo(xe, ym + oy, xm + ox, ye, xm, ye);
+			  ctx.bezierCurveTo(xm - ox, ye, x, ym + oy, x, ym);
+			  //ctx.closePath(); // not used correctly, see comments (use to close off open path)
+			  ctx.stroke();
+			}
 			
 			var mapTemplate = 
 			
